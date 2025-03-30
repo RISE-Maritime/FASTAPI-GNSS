@@ -1,3 +1,6 @@
 fastapi[standard]
 uvicorn[standard]
+<<<<<<< HEAD
 keelson==0.4.3
+=======
+>>>>>>> 8f1dfe4 (Setup)

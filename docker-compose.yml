@@ -6,7 +6,10 @@ services:
     build: .
     networks:
       - proxy
+<<<<<<< HEAD
       - zenoh-internal
+=======
+>>>>>>> 8f1dfe4 (Setup)
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gnss.rule=Host(`app.mo.ri.se`) && PathPrefix(`/gnss`)"
@@ -19,5 +22,8 @@ services:
 networks:
   proxy:
     external: true
+<<<<<<< HEAD
   zenoh-internal:
     external: true
+=======
+>>>>>>> 8f1dfe4 (Setup)
