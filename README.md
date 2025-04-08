@@ -10,6 +10,8 @@ Quick start
 # Other devices 
 python main.py
 
+python3 main.py --connect tcp/localhost:7447 --mode client
+
 # Development environment
 fastapi dev main.py      
 
