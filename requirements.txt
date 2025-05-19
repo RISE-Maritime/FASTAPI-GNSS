@@ -1,2 +1,2 @@
 fastapi[standard]
-keelson==0.3.9rc20
+keelson==0.4.3

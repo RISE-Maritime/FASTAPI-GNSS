@@ -32,12 +32,15 @@ Parsed body LAT: ['57.43587153498083']
 
 
 { 
-    # POS
+    # Location Fix 
     'lat': '57.43596067652106', # Deg 
     'lon': '12.032632464542985', # Deg
-    'sat': '27', 
     'alt': '74.0', # Meters 
+    
+    # location_fix_accuracy_horizontal_m
     'acc': '4.0', # Meters 
+    
+    'sat': '27', 
     
     # Log / Annotation
     'desc': '',  # Description text with note icon in app
