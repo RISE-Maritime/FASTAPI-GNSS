@@ -29,7 +29,7 @@ logging.captureWarnings(True)
 logging.info("Opening Zenoh session...")
 conf = zenoh.Config()
 # conf.insert_json5("mode", json.dumps("client"))
-# conf.insert_json5("connect/endpoints", json.dumps(["tcp/localhost:7447"]))
+conf.insert_json5("connect/endpoints", json.dumps(["tcp/zenoh-router:7447"]))
 zenoh_session = zenoh.open(conf)
 
 
@@ -87,9 +87,9 @@ async def log(
     }
 
 
-@app.post("/log_all")
+@app.post("/log_all/{entityid}")
 async def log_post(
-    request: Request, lat: float = None, long: float = None, time: str = None
+    entityid, request: Request, lat: float = None, long: float = None, time: str = None
 ):
 
     logging.debug(f"Received POST LOGG at time: {time}")
@@ -167,7 +167,7 @@ async def log_post(
             # PositionFix
             key_expr_location_fix = keelson.construct_pubsub_key(
                 base_path="rise",
-                entity_id="web",
+                entity_id=entityid,
                 subject="location_fix",
                 source_id=parsed_data.get("profile"),
             )
@@ -180,7 +180,7 @@ async def log_post(
             # Accuracy
             key_expr_accuracy = keelson.construct_pubsub_key(
                 base_path="rise",
-                entity_id="web",
+                entity_id=entityid,
                 subject="location_fix_accuracy_horizontal_m",
                 source_id=parsed_data.get("profile"),
             )
@@ -192,7 +192,7 @@ async def log_post(
             # HDOP
             key_expr_hdop = keelson.construct_pubsub_key(
                 base_path="rise",
-                entity_id="web",
+                entity_id=entityid,
                 subject="location_fix_hdop",
                 source_id=parsed_data.get("profile"),
             )
@@ -204,7 +204,7 @@ async def log_post(
             # VDOP
             key_expr_vdop = keelson.construct_pubsub_key(
                 base_path="rise",
-                entity_id="web",
+                entity_id=entityid,
                 subject="location_fix_vdop",
                 source_id=parsed_data.get("profile"),
             )
@@ -216,7 +216,7 @@ async def log_post(
             # PDOP  
             key_expr_pdop = keelson.construct_pubsub_key(
                 base_path="rise",
-                entity_id="web",
+                entity_id=entityid,
                 subject="location_fix_pdop",
                 source_id=parsed_data.get("profile"),
             )
@@ -228,7 +228,7 @@ async def log_post(
             # Satellites
             key_expr_satellites = keelson.construct_pubsub_key(
                 base_path="rise",
-                entity_id="web",
+                entity_id=entityid,
                 subject="location_fix_satellites_used",
                 source_id=parsed_data.get("profile"),
             )
@@ -240,7 +240,7 @@ async def log_post(
             # course_over_ground_deg
             key_expr_heading = keelson.construct_pubsub_key(    
                 base_path="rise",
-                entity_id="web",
+                entity_id=entityid,
                 subject="course_over_ground_deg",
                 source_id=parsed_data.get("profile"),
             )
@@ -252,7 +252,7 @@ async def log_post(
             # speed_over_ground_knots
             key_expr_speed = keelson.construct_pubsub_key(
                 base_path="rise",
-                entity_id="web",
+                entity_id=entityid,
                 subject="speed_over_ground_knots",
                 source_id=parsed_data.get("profile"),
             )
@@ -264,7 +264,7 @@ async def log_post(
             # Battery
             key_expr_battery = keelson.construct_pubsub_key(
                 base_path="rise",
-                entity_id="web",
+                entity_id=entityid,
                 subject="battery_state_of_charge_pct",
                 source_id=parsed_data.get("profile"),
             )
