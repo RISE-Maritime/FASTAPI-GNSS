@@ -6,6 +6,7 @@ services:
     build: .
     networks:
       - proxy
+    # network_mode: "host" 
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gnss.rule=Host(`app.mo.ri.se`) && PathPrefix(`/gnss`)"
