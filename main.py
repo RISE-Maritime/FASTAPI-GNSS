@@ -89,10 +89,9 @@ async def log(
 
 @app.post("/log_all/{entityid}")
 async def log_post(
-    entityid, request: Request, lat: float = None, long: float = None, time: str = None
+    request: Request, entityid: str
 ):
 
-    logging.debug(f"Received POST LOGG at time: {time}")
 
     try:
         body = await request.body()
