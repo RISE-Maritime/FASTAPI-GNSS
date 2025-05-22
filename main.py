@@ -126,7 +126,7 @@ async def log_post(
         if zenoh_session:
 
             # PositionFix
-            if parsed_data.get("lat") is not None or parsed_data.get("lon") is not None:
+            if parsed_data.get("lat") or parsed_data.get("lon"):
                 payload_fix = LocationFix()
                 payload_fix.timestamp.FromDatetime(datetime_fix)
                 payload_fix.latitude = float(parsed_data.get("lat"))
@@ -145,7 +145,7 @@ async def log_post(
 
 
             # Accuracy
-            if parsed_data.get("acc") is not None:
+            if parsed_data.get("acc"):
                 payload_accuracy = TimestampedFloat()   
                 payload_accuracy.timestamp.FromDatetime(datetime_fix)
                 payload_accuracy.value = float(parsed_data.get("acc"))
@@ -161,7 +161,7 @@ async def log_post(
                 logging.debug(f"Published Accuracy to Zenoh with key: {key_expr_accuracy}")
 
             # HDOP
-            if parsed_data.get("hdop") is not None:
+            if parsed_data.get("hdop"):
                 payload_hdop = TimestampedFloat()
                 payload_hdop.timestamp.FromDatetime(datetime_fix)
                 payload_hdop.value = float(parsed_data.get("hdop"))
@@ -177,7 +177,7 @@ async def log_post(
                 logging.debug(f"Published HDOP to Zenoh with key: {key_expr_hdop}")
 
             # VDOP
-            if parsed_data.get("vdop") is not None:
+            if parsed_data.get("vdop"):
                 payload_vdop = TimestampedFloat()
                 payload_vdop.timestamp.FromDatetime(datetime_fix)
                 payload_vdop.value = float(parsed_data.get("vdop"))
@@ -193,7 +193,7 @@ async def log_post(
                 logging.debug(f"Published VDOP to Zenoh with key: {key_expr_vdop}")
 
             # PDOP 
-            if parsed_data.get("pdop") is not None:
+            if parsed_data.get("pdop"):
                 payload_pdop = TimestampedFloat()
                 payload_pdop.timestamp.FromDatetime(datetime_fix)
                 payload_pdop.value = float(parsed_data.get("pdop"))
@@ -209,7 +209,7 @@ async def log_post(
                 logging.debug(f"Published PDOP to Zenoh with key: {key_expr_pdop}")
 
             # Satellites
-            if parsed_data.get("sat") is not None:
+            if parsed_data.get("sat"):
                 payload_satellites = TimestampedInt()
                 payload_satellites.timestamp.FromDatetime(datetime_fix)
                 payload_satellites.value = int(parsed_data.get("sat"))
@@ -225,7 +225,7 @@ async def log_post(
                 logging.debug(f"Published Satellites to Zenoh with key: {key_expr_satellites}")
 
             # course_over_ground_deg
-            if parsed_data.get("dir") is not None:
+            if parsed_data.get("dir"):
                 payload_heading = TimestampedFloat()
                 payload_heading.timestamp.FromDatetime(datetime_fix)
                 payload_heading.value = float(parsed_data.get("dir"))
@@ -241,7 +241,7 @@ async def log_post(
                 logging.debug(f"Published course_over_ground_deg to Zenoh with key: {key_expr_heading}")
 
             # speed_over_ground_knots
-            if parsed_data.get("spd") is not None:
+            if parsed_data.get("spd"):
                 payload_speed = TimestampedFloat()
                 payload_speed.timestamp.FromDatetime(datetime_fix)
                 knots =  float(parsed_data.get("spd")) * 1.94384 # convert to knots
@@ -258,7 +258,7 @@ async def log_post(
                 logging.debug(f"Published speed_over_ground_knots to Zenoh with key: {key_expr_speed}")
             
             # Battery
-            if parsed_data.get("batt") is not None:
+            if parsed_data.get("batt"):
                 payload_battery = TimestampedFloat()
                 payload_battery.timestamp.FromDatetime(datetime_fix)
                 payload_battery.value = float(parsed_data.get("batt"))
