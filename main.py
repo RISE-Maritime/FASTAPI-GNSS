@@ -89,16 +89,10 @@ async def log(
 
 @app.post("/log_all/{entityid}")
 async def log_post(
-<<<<<<< HEAD
-    request: Request, entityid: str
-):
-
-=======
     entityid, request: Request, lat: float = None, long: float = None, time: str = None
 ):
 
     logging.debug(f"Received POST LOGG at time: {time}")
->>>>>>> c62526d (on server)
 
     try:
         body = await request.body()
@@ -116,17 +110,6 @@ async def log_post(
         )
 
 
-<<<<<<< HEAD
-        # Satellites
-
-        # course_over_ground_deg
-
-
-        # speed_over_ground_knots
-
-        
- 
-=======
         # PositionFix
         payload_fix = LocationFix()
         payload_fix.timestamp.FromDatetime(datetime_fix)
@@ -174,7 +157,6 @@ async def log_post(
         payload_battery = TimestampedFloat()
         payload_battery.timestamp.FromDatetime(datetime_fix)
         payload_battery.value = float(parsed_data.get("batt"))
->>>>>>> c62526d (on server)
 
         # TODO: Battery is charging
 
@@ -183,154 +165,6 @@ async def log_post(
         if zenoh_session:
 
             # PositionFix
-<<<<<<< HEAD
-            if parsed_data.get("lat") or parsed_data.get("lon"):
-                payload_fix = LocationFix()
-                payload_fix.timestamp.FromDatetime(datetime_fix)
-                payload_fix.latitude = float(parsed_data.get("lat"))
-                payload_fix.longitude = float(parsed_data.get("lon"))
-                payload_fix.altitude = float(parsed_data.get("alt"))
-                key_expr_location_fix = keelson.construct_pubsub_key(
-                    base_path="rise",
-                    entity_id=entityid,
-                    subject="location_fix",
-                    source_id=parsed_data.get("profile"),
-                )
-                serialized_position_fix = payload_fix.SerializeToString()
-                envelope = keelson.enclose(serialized_position_fix)
-                zenoh_session.put(key_expr=key_expr_location_fix,payload=envelope)
-                logging.debug(f"Published PositionFix to Zenoh with key: {key_expr_location_fix}")
-
-
-            # Accuracy
-            if parsed_data.get("acc"):
-                payload_accuracy = TimestampedFloat()   
-                payload_accuracy.timestamp.FromDatetime(datetime_fix)
-                payload_accuracy.value = float(parsed_data.get("acc"))
-                key_expr_accuracy = keelson.construct_pubsub_key(
-                    base_path="rise",
-                    entity_id=entityid,
-                    subject="location_fix_accuracy_horizontal_m",
-                    source_id=parsed_data.get("profile"),
-                )
-                serialized_accuracy = payload_accuracy.SerializeToString()
-                envelope = keelson.enclose(serialized_accuracy)
-                zenoh_session.put(key_expr=key_expr_accuracy, payload=envelope)
-                logging.debug(f"Published Accuracy to Zenoh with key: {key_expr_accuracy}")
-
-            # HDOP
-            if parsed_data.get("hdop"):
-                payload_hdop = TimestampedFloat()
-                payload_hdop.timestamp.FromDatetime(datetime_fix)
-                payload_hdop.value = float(parsed_data.get("hdop"))
-                key_expr_hdop = keelson.construct_pubsub_key(
-                    base_path="rise",
-                    entity_id=entityid,
-                    subject="location_fix_hdop",
-                    source_id=parsed_data.get("profile"),
-                )
-                serialized_hdop = payload_hdop.SerializeToString()
-                envelope = keelson.enclose(serialized_hdop)
-                zenoh_session.put(key_expr=key_expr_hdop, payload=envelope)
-                logging.debug(f"Published HDOP to Zenoh with key: {key_expr_hdop}")
-
-            # VDOP
-            if parsed_data.get("vdop"):
-                payload_vdop = TimestampedFloat()
-                payload_vdop.timestamp.FromDatetime(datetime_fix)
-                payload_vdop.value = float(parsed_data.get("vdop"))
-                key_expr_vdop = keelson.construct_pubsub_key(
-                    base_path="rise",
-                    entity_id=entityid,
-                    subject="location_fix_vdop",
-                    source_id=parsed_data.get("profile"),
-                )
-                serialized_vdop = payload_vdop.SerializeToString()
-                envelope = keelson.enclose(serialized_vdop)
-                zenoh_session.put(key_expr=key_expr_vdop, payload=envelope)
-                logging.debug(f"Published VDOP to Zenoh with key: {key_expr_vdop}")
-
-            # PDOP 
-            if parsed_data.get("pdop"):
-                payload_pdop = TimestampedFloat()
-                payload_pdop.timestamp.FromDatetime(datetime_fix)
-                payload_pdop.value = float(parsed_data.get("pdop"))
-                key_expr_pdop = keelson.construct_pubsub_key(
-                    base_path="rise",
-                    entity_id=entityid,
-                    subject="location_fix_pdop",
-                    source_id=parsed_data.get("profile"),
-                )
-                serialized_pdop = payload_pdop.SerializeToString()
-                envelope = keelson.enclose(serialized_pdop)
-                zenoh_session.put(key_expr=key_expr_pdop, payload=envelope)
-                logging.debug(f"Published PDOP to Zenoh with key: {key_expr_pdop}")
-
-            # Satellites
-            if parsed_data.get("sat"):
-                payload_satellites = TimestampedInt()
-                payload_satellites.timestamp.FromDatetime(datetime_fix)
-                payload_satellites.value = int(parsed_data.get("sat"))
-                key_expr_satellites = keelson.construct_pubsub_key(
-                    base_path="rise",
-                    entity_id=entityid,
-                    subject="location_fix_satellites_used",
-                    source_id=parsed_data.get("profile"),
-                )
-                serialized_satellites = payload_satellites.SerializeToString()
-                envelope = keelson.enclose(serialized_satellites)
-                zenoh_session.put(key_expr=key_expr_satellites, payload=envelope)
-                logging.debug(f"Published Satellites to Zenoh with key: {key_expr_satellites}")
-
-            # course_over_ground_deg
-            if parsed_data.get("dir"):
-                payload_heading = TimestampedFloat()
-                payload_heading.timestamp.FromDatetime(datetime_fix)
-                payload_heading.value = float(parsed_data.get("dir"))
-                key_expr_heading = keelson.construct_pubsub_key(    
-                    base_path="rise",
-                    entity_id=entityid,
-                    subject="course_over_ground_deg",
-                    source_id=parsed_data.get("profile"),
-                )
-                serialized_heading = payload_heading.SerializeToString()
-                envelope = keelson.enclose(serialized_heading)
-                zenoh_session.put(key_expr=key_expr_heading, payload=envelope)
-                logging.debug(f"Published course_over_ground_deg to Zenoh with key: {key_expr_heading}")
-
-            # speed_over_ground_knots
-            if parsed_data.get("spd"):
-                payload_speed = TimestampedFloat()
-                payload_speed.timestamp.FromDatetime(datetime_fix)
-                knots =  float(parsed_data.get("spd")) * 1.94384 # convert to knots
-                payload_speed.value = float(knots)
-                key_expr_speed = keelson.construct_pubsub_key(
-                    base_path="rise",
-                    entity_id=entityid,
-                    subject="speed_over_ground_knots",
-                    source_id=parsed_data.get("profile"),
-                )
-                serialized_speed = payload_speed.SerializeToString()
-                envelope = keelson.enclose(serialized_speed)
-                zenoh_session.put(key_expr=key_expr_speed, payload=envelope)
-                logging.debug(f"Published speed_over_ground_knots to Zenoh with key: {key_expr_speed}")
-            
-            # Battery
-            if parsed_data.get("batt"):
-                payload_battery = TimestampedFloat()
-                payload_battery.timestamp.FromDatetime(datetime_fix)
-                payload_battery.value = float(parsed_data.get("batt"))
-                key_expr_battery = keelson.construct_pubsub_key(
-                    base_path="rise",
-                    entity_id=entityid,
-                    subject="battery_state_of_charge_pct",
-                    source_id=parsed_data.get("profile"),
-                )
-                serialized_battery = payload_battery.SerializeToString()
-                envelope = keelson.enclose(serialized_battery)
-                zenoh_session.put(key_expr=key_expr_battery, payload=envelope)
-                logging.debug(f"Published battery_state_of_charge_pct to Zenoh with key: {key_expr_battery}")
-=======
             key_expr_location_fix = keelson.construct_pubsub_key(
                 base_path="rise",
                 entity_id=entityid,
@@ -438,7 +272,6 @@ async def log_post(
             envelope = keelson.enclose(serialized_battery)
             zenoh_session.put(key_expr=key_expr_battery, payload=envelope)
             logging.debug(f"Published battery_state_of_charge_pct to Zenoh with key: {key_expr_battery}")
->>>>>>> c62526d (on server)
 
 
         else:

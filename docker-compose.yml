@@ -6,14 +6,8 @@ services:
     build: .
     networks:
       - proxy
-<<<<<<< HEAD
-<<<<<<< HEAD
       - zenoh-internal
-=======
->>>>>>> 8f1dfe4 (Setup)
-=======
       - zenoh-internal
->>>>>>> c62526d (on server)
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gnss.rule=Host(`app.mo.ri.se`) && PathPrefix(`/gnss`)"
@@ -23,16 +17,14 @@ services:
       - "traefik.http.routers.gnss.tls.certresolver=LEresolver"
       - "traefik.http.services.gnss.loadbalancer.server.port=8000"
 
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 networks:
   proxy:
     external: true
-<<<<<<< HEAD
-<<<<<<< HEAD
   zenoh-internal:
     external: true
-=======
->>>>>>> 8f1dfe4 (Setup)
-=======
-  zenoh-internal:
-    external: true
->>>>>>> c62526d (on server)
