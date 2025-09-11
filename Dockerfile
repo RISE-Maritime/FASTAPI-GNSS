@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 FROM python:3.13-slim
 =======
 FROM python:3.11-slim
 >>>>>>> 8f1dfe4 (Setup)
+=======
+FROM python:3.13-slim
+>>>>>>> c62526d (on server)
 
 WORKDIR /app
 COPY . /app
