@@ -161,7 +161,7 @@ async def log_post(
         # Battery is charging
         payload_is_charging = TimestampedBool()
         payload_is_charging.timestamp.FromDatetime(datetime_fix)
-        if int(parsed_data.get("ischarging")) == "true":
+        if parsed_data.get("ischarging") == "true":
             payload_is_charging.value = True
         else:
             payload_is_charging.value = False
