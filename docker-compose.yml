@@ -7,7 +7,6 @@ services:
     networks:
       - proxy
       - zenoh-internal
-      - zenoh-internal
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gnss.rule=Host(`app.mo.ri.se`) && PathPrefix(`/gnss`)"
