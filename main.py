@@ -6,7 +6,7 @@ from fastapi import Request
 import zenoh
 import keelson
 from keelson.payloads.foxglove.LocationFix_pb2 import LocationFix
-from keelson.payloads.Primitives_pb2 import TimestampedFloat, TimestampedInt
+from keelson.payloads.Primitives_pb2 import TimestampedFloat, TimestampedInt, TimestampedBool
 import json
 import logging
 import datetime
@@ -158,7 +158,13 @@ async def log_post(
         payload_battery.timestamp.FromDatetime(datetime_fix)
         payload_battery.value = float(parsed_data.get("batt"))
 
-        # TODO: Battery is charging
+        # Battery is charging
+        payload_is_charging = TimestampedBool()
+        payload_is_charging.timestamp.FromDatetime(datetime_fix)
+        if int(parsed_data.get("ischarging")) == "true":
+            payload_is_charging.value = True
+        else:
+            payload_is_charging.value = False
 
 
         # Publish data using Zenoh
@@ -272,6 +278,18 @@ async def log_post(
             envelope = keelson.enclose(serialized_battery)
             zenoh_session.put(key_expr=key_expr_battery, payload=envelope)
             logging.debug(f"Published battery_state_of_charge_pct to Zenoh with key: {key_expr_battery}")
+
+            # Battery is charging
+            key_expr_is_charging = keelson.construct_pubsub_key(
+                base_path="rise",
+                entity_id=entityid,
+                subject="battery_is_charging",
+                source_id=parsed_data.get("profile"),
+            )
+            serialized_is_charging = payload_is_charging.SerializeToString()
+            envelope = keelson.enclose(serialized_is_charging)
+            zenoh_session.put(key_expr=key_expr_is_charging, payload=envelope)
+            logging.debug(f"Published battery_is_charging to Zenoh with key: {key_expr_is_charging}")
 
 
         else:
