@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(env/bin/python -m pip index versions keelson)",
+      "Bash(env/bin/python -m pip install -q \"keelson==0.5.2\")",
+      "Bash(env/bin/python -)"
+    ]
+  }
+}
